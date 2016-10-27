@@ -1,0 +1,93 @@
+#:import Factory kivy.factory.Factory
+
+<SimpleRoot>:
+	orientation: "vertical"
+	padding: root.width * .02, root.height * .02
+	spacing: "10dp"
+	# We create the widgets
+	Image:
+		source: "./logo_final.png"
+	BoxLayout:
+		Label:
+			text: 'Toggle CSD Pattern:\n%s' % pattern_spin.text
+			font_size: "20sp"
+			bold: True
+			halign: 'center'  
+		BoxLayout:
+			orientation:"vertical"
+			Label:
+				text:""
+			#Spinner:
+			#	id: pattern_spin
+			#	text: "Linear"
+			#	font_size: "25sp"
+			#	bold: True
+			#	values:["Linear","Ring","Split"]
+			#	background_color: (0.38, 0.267, 0.608, 0.9)
+			#	option_cls: Factory.get("MySpinnerOption")
+			Button:
+				id: pattern_spin
+				text:"Linear"
+				font_size: "25sp"
+				bold: True
+				background_color: (0.38, 0.267, 0.608, 0.9)
+				on_press: self.text = "Ring" if self.text=="Linear" else "Split" if self.text=="Ring" else "Linear"
+			Label:
+				text:""
+
+	BoxLayout:
+		#orientation:"horizontal"
+		Label:
+			text: 'Set CSD Speed:\n%s mm/min' % int(s1.value) if s1.value else 'CSD Speed:'
+			font_size: "20sp"
+			bold: True
+			halign: 'center'  
+		BoxLayout:
+			orientation:"vertical"
+			Label:
+				text:""
+			Slider:
+				id: s1
+				value: 1
+				min: 1
+				max: 61
+			Label:
+				text:""
+    			
+	# Start of second part
+	Button:
+		text: "Start CSD Simulation"
+		background_color: (0.38, 0.267, 0.608, 0.9)
+		#background_color: (0.588, 0.49, 0.67, 0.9)
+		font_size: "35sp"
+		bold: True
+		on_press: root.on_our_btn_release(int(s1.value), pattern_spin.text)
+
+<MySpinnerOption@SpinnerOption>:
+	id: spin
+	background_color: (0.588, 0.49, 0.67, 0.9)
+	font_size: "20sp"
+	on_press: root.pressed_spinner(spin.text)
+
+<CircularWidget>
+	canvas:
+		Color:
+			rgba: self.r, self.g, self.b, .9 
+		Ellipse:
+			size: (self.size[1],self.size[1])
+			pos: self.pos
+
+<StopStart>
+	orientation: "vertical"
+	spacing: "10db"
+	Label:
+		text: "Info on CSD simulation..."
+	Label:
+		text: ""
+	Button:
+		text: "Pause"
+		size_hint: (1,.2)
+	Button:
+		id: end
+		text: "End"
+		size_hint: (1,.3)
